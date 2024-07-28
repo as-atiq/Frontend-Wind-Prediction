@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wind Speed Prediction</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
+</head>
+<body>
+    <header>
+        <h1>Wind Speed Prediction</h1>
+        <p>Enter the required features to predict wind speed</p>
+    </header>
+    <div class="container">
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+        <div class="form-container">
+            <form id="prediction-form">
+                <div class="form-group">
+                    <label for="feature1">Feature 1:</label>
+                    <input type="number" id="feature1" name="feature1" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature2">Feature 2:</label>
+                    <input type="number" id="feature2" name="feature2" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature3">Feature 3:</label>
+                    <input type="number" id="feature3" name="feature3" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature4">Feature 4:</label>
+                    <input type="number" id="feature4" name="feature4" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature5">Feature 5:</label>
+                    <input type="number" id="feature5" name="feature5" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature6">Feature 6:</label>
+                    <input type="number" id="feature6" name="feature6" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature7">Feature 7:</label>
+                    <input type="number" id="feature7" name="feature7" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature8">Feature 8:</label>
+                    <input type="number" id="feature8" name="feature8" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature9">Feature 9:</label>
+                    <input type="number" id="feature9" name="feature9" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature10">Feature 10:</label>
+                    <input type="number" id="feature10" name="feature10" required>
+                </div>
+                <button type="submit">Predict</button>
+            </form>
+            <div id="result"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('prediction-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const features = [
+                document.getElementById('feature1').value,
+                document.getElementById('feature2').value,
+                document.getElementById('feature3').value,
+                document.getElementById('feature4').value,
+                document.getElementById('feature5').value,
+                document.getElementById('feature6').value,
+                document.getElementById('feature7').value,
+                document.getElementById('feature8').value,
+                document.getElementById('feature9').value,
+                document.getElementById('feature10').value
+            ].map(Number);
+
+            fetch('http://localhost:5000/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ features })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = 'Predicted Wind Speed: ' + data.wind_speed;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        function initMap() {
+            const location = { lat: 47.56716, lng: -52.063945 };
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 10,
+                center: location
+            });
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+        }
+    </script>
+</body>
+</html>
